@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>単語カード/单词卡</title>
+  <title>中国語で伝えよう！単語カード</title>
   <style>
     .header {
       position: fixed;
@@ -27,14 +27,14 @@
     }
 
     #flashcard {
-      margin-top: 180px;
+      margin-top: 120px;
       width: 340px;
       height: 200px;
       border: 1px solid #000;
       text-align: center;
-      line-height: 200px;
-      /* display: flex; */
-      /* justify-content: center; */
+      /* line-height: 200px; */
+      display: flex;
+      justify-content: center;
       align-items: center;
       font-size: 20px;
     }
@@ -140,7 +140,7 @@
 
     #resultKensaku {
       position: relative;
-      top: 160px;
+      top: 100px;
       left: 0px;
       z-index: 1;
       width: auto;
@@ -179,6 +179,7 @@
     .imgDivNoDisplay {
       display: none;
     }
+
     .classImageSize {
       width: 100;
       height: 100;
@@ -220,7 +221,8 @@
     #questionNo {
       margin-left: 30px;
     }
-    #kensaku{
+
+    #kensaku {
       margin-left: 10px;
     }
 
@@ -247,6 +249,7 @@
       font-size: 24px;
       color: red;
     }
+
     .clkBtn {
       cursor: pointer;
       user-select: none;
@@ -279,7 +282,7 @@
   <div class="header">
     <div class="header2">
       <div class="logo">
-        <h3>中国語で伝えよう</h3>
+        <h3>単語カード</h3>
 
 
       </div>
@@ -288,11 +291,12 @@
 
       </div>
       <div class="linkurl">
-        <a id="flash"
-        href="https://script.google.com/macros/s/AKfycbyoA4vA6ydf9jtEP0IB7_d2bBdg9YeKrf_3fibtY4ixfqlPUV9boReod54W2iC0tPQc/exec"
-
+        <a href="https://script.google.com/macros/s/AKfycbyoA4vA6ydf9jtEP0IB7_d2bBdg9YeKrf_3fibtY4ixfqlPUV9boReod54W2iC0tPQc/exec"
           target="_blank">本文</a>
-        <a id="ikeda"  href="https://docs.google.com/document/d/1z__D4GyjYQrvxpVLqutpov7_f8z0RnHX5X_iTIqx8_s/edit?usp=sharing" target="_blank">Help</a>
+        <a id="ikeda"
+          href="https://docs.google.com/document/d/1z__D4GyjYQrvxpVLqutpov7_f8z0RnHX5X_iTIqx8_s/edit?usp=sharing"
+          target="_blank">Help</a>
+
 
       </div>
     </div>
@@ -305,7 +309,7 @@
       <div id="questionNo"></div>
       <div id="kensaku">
         <form>
-          <input type="text" id="myInput" maxlength="8" placeholder="検索したい言葉を入力してください。">
+          <input type="text" id="myInput" placeholder="検索したい言葉を入力してください。">
           <button id="btnKensaku">検索</button>
         </form>
       </div>
@@ -315,7 +319,7 @@
   <div id="divTangoCard" class="divTangoCardDisplay">
 
 
-    <div id="flashcard">Click to see definition/[下一个](次へ)を押して単語を見る</div>
+    <div id="flashcard">Click to see definition/按下键看单词卡</div>
     <div id="etcInfo">
       <div id="imgDiv" class="imgDivNoDisplay">
         <a id="aGazou" target="_blank"><img id="imgGazou" width="100" height="100"></a>
@@ -348,7 +352,7 @@
     <!-- <div id="resultKensakuContent"> -->
 
 
-   
+
   </div>
 
 
@@ -368,7 +372,7 @@
     let isKanjiCheck = false;
     let textChinese;  // 　ピンイン削除後の中国語を記憶
     let tdOLD;
-    let tdOLDColor;  
+    let tdOLDColor;
 
     const flashcard = document.getElementById('flashcard');
     // const button = document.querySelector('button');
@@ -503,7 +507,7 @@
       fncImageNoDisplay();
 
       displayResult();
-      flashcard.textContent = '[下一个](次へ)を押して単語を見る';
+      flashcard.textContent = '按下键看单词卡';
       totalGrade.classList.remove('totalGradeDisplay');
       totalGrade.classList.add('totalGradeNoDisplay');
 
@@ -541,7 +545,7 @@
       questionNo.textContent = '';
       totalGrade.classList.remove('totalGradeDisplay');
       totalGrade.classList.add('totalGradeNoDisplay');
-      flashcard.textContent = '[下一个](次へ)を押して単語を見る';
+      flashcard.textContent = '按下键看单词卡';
       showCard.classList.add('showCardBlock');
       showCard.classList.remove('showCardNone');
       let result = document.querySelector('.result');
@@ -686,18 +690,26 @@
       synth.speak(utterance);
     }
     // テキストを音声に変換して再生する関数
-    function speakText2(param1) {
+    function speakText2(text) {
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-CN'; // 中国語の言語コード
+      synth.speak(utterance);
+    }
+
+    // テキストを音声に変換して再生する関数
+    function speakText3(param1) {
       const td = param1;
-       //2023/04/27 追加　背景色
-       if (tdOLD === undefined){
-          tdOLD = param1;
-          tdOLDColor = tdOLD.style.backgroundColor;
-        } else {
-          tdOLD.style.backgroundColor = tdOLDColor;
-          tdOLD = param1;
-        }
-        //2023/04/27 追加　背景色
-        td.style.backgroundColor = 'cyan';
+      //2023/04/27 追加　背景色
+      if (tdOLD === undefined) {
+        tdOLD = param1;
+        tdOLDColor = tdOLD.style.backgroundColor;
+      } else {
+        tdOLD.style.backgroundColor = tdOLDColor;
+        tdOLD = param1;
+      }
+      //2023/04/27 追加　背景色
+      td.style.backgroundColor = 'cyan';
 
       const utterance = new SpeechSynthesisUtterance(td.textContent);
       utterance.lang = 'zh-CN'; // 中国語の言語コード
@@ -724,7 +736,7 @@
 
 
     // 最初のカードを表示
-    flashcard.textContent = '[下一个](次へ)を押して単語を見る';
+    flashcard.textContent = '按下键看单词卡';
     // フラッシュカードがクリックされた時の処理
     flashcard.addEventListener('click', () => {
       if (termSave === 'ch') {
@@ -760,7 +772,7 @@
       for (i = 1; i < flashcardDatas.length; i++) {
         for (let j = 0; j < flashcardDatas[i].length; j++) {
           let sheetName = flashcardDatas[0][i - 1];
-          if (sheetName.indexOf(filter) > -1 || flashcardDatas[i][j][1].indexOf(filter) > -1 || flashcardDatas[i][j][2].indexOf(filter) > -1  || filter === 'all') {
+          if (sheetName.indexOf(filter) > -1 || flashcardDatas[i][j][1].indexOf(filter) > -1 || flashcardDatas[i][j][2].indexOf(filter) > -1 || filter === 'all') {
             console.log(flashcardDatas[i][j]);
             isFind = true;
 
@@ -779,7 +791,8 @@
 
             td = document.createElement('td');
             td.textContent = flashcardDatas[i][j][2];
-            td.setAttribute('onclick', 'speakText2(this)');
+
+            td.setAttribute('onclick', 'speakText3(this)');
             td.setAttribute('class', 'clkBtn');
 
 
@@ -791,7 +804,7 @@
             if (flashcardDatas[i][j][5] !== '') {
               td = document.createElement('td');
               let atag = document.createElement('a');
-  
+
               let gazouURL0 = flashcardDatas[i][j][5];
               atag.setAttribute('href', gazouURL0);
               atag.setAttribute('class', 'classGazou');
@@ -804,17 +817,17 @@
             if (flashcardDatas[i][j][4] !== '') {
               td = document.createElement('td');
               let atag = document.createElement('a');
-  
+
               let gazouURL0 = flashcardDatas[i][j][4];
               atag.setAttribute('href', gazouURL0);
               atag.setAttribute('class', 'classGazou');
               atag.setAttribute('target', '_blank');
-             
+
               td.appendChild(atag);
               tr.appendChild(td);
               let img = document.createElement('img');
-  
-  
+
+
               img.setAttribute('src', gazouURL0);
               img.setAttribute('class', 'classGazou classImageSize');
               atag.appendChild(img);
@@ -822,7 +835,7 @@
               tr.appendChild(td);
             }
 
-            
+
 
 
           } else {
