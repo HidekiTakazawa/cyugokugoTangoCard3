@@ -411,6 +411,11 @@
     let kurukuru = document.getElementById('kurukuru');
     let startTime;
     let endTime;
+    let voices = [];
+    // 初期音声リストの取得
+    voices = speechSynthesis.getVoices();
+    // 音声リストが取得できない場合は、音声リストが取得できるようになるまで待機
+    //
     const flashcard = document.getElementById('flashcard');
     // const button = document.querySelector('button');
     const sheetSelector = document.getElementById("sheet-select");
@@ -745,6 +750,15 @@
       console.log(`split後= ${textChinese}`);
       const utterance = new SpeechSynthesisUtterance(textChinese);
       utterance.lang = 'zh-CN'; // 中国語の言語コード
+      // 利用可能な音声を確認
+      const voices = speechSynthesis.getVoices();
+      const chineseVoice = getChineseVoice();
+
+      if (chineseVoice) {
+        utterance.voice = chineseVoice;
+      } else {
+        console.warn('Chinese voice not found, using default voice.');
+      }
       synth.speak(utterance);
     }
     // テキストを音声に変換して再生する関数
@@ -752,6 +766,15 @@
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'zh-CN'; // 中国語の言語コード
+      // 利用可能な音声を確認
+      const voices = speechSynthesis.getVoices();
+      const chineseVoice = getChineseVoice();
+
+      if (chineseVoice) {
+        utterance.voice = chineseVoice;
+      } else {
+        console.warn('Chinese voice not found, using default voice.');
+      }
       synth.speak(utterance);
     }
 
@@ -771,6 +794,15 @@
 
       const utterance = new SpeechSynthesisUtterance(td.textContent);
       utterance.lang = 'zh-CN'; // 中国語の言語コード
+      // 利用可能な音声を確認
+      const voices = speechSynthesis.getVoices();
+      const chineseVoice = getChineseVoice();
+
+      if (chineseVoice) {
+        utterance.voice = chineseVoice;
+      } else {
+        console.warn('Chinese voice not found, using default voice.');
+      }
       synth.speak(utterance);
     }
     // 正解不正解の判断
@@ -921,6 +953,18 @@
       resultKensaku.classList.add('resultKensakuNoDisplay');
       resultKensaku.classList.remove('resultKensakuDisplay');
     }
+    //
+    function getChineseVoice() {
+      if (voices.length === 0) {
+        voices = speechSynthesis.getVoices();
+      }
+      return voices.find(voice => voice.lang === 'zh-CN');
+    }
+
+    // 音声リストが更新されたときに再取得
+    speechSynthesis.onvoiceschanged = function () {
+      voices = speechSynthesis.getVoices();
+    };
 
 
   </script>
